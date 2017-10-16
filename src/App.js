@@ -7,25 +7,28 @@ import Search from './search'
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    thatBooks: []
   }
 
   componentDidMount(){
     BooksAPI.getAll().then((books) => {this.setState({ books }) });
-    
   }
 
+  updateShelf(id, shelf){
+    BooksAPI.update(id, shelf);
+  }
 
 
   render() {
     return (
       <div className="app">
-        <Route path="/search" render={() => (
-            <Search
+        <Route exact path="/search" render={() => (
+            <Search thatBooks={this.state.thatBooks}
             />
           )}/>
         <Route exact path="/" render={() => (
-            <BookShelf books={this.state.books} 
+            <BookShelf books={this.state.books} update={this.updateShelf}
             />
           )}/>
       </div>

@@ -4,14 +4,20 @@ import PropTypes from 'prop-types';
 
 class Search extends Component {
 
+	state = {
+		query : ''
+
+	}
+
 	static PropTypes = {
-			books: PropTypes.array.isReqeuired
+			thatBooks: PropTypes.array.isRequired
 		}
 
+	// BooksAPI.search().then((books) => {this.setState({ thatBooks : books }) });
 
 	render(){
 		console.log(this.props);
-		let showingBooks = this.props.books;
+		let showingBooks = this.props.thatBooks;
 		
 		return(
 			<div className="search-books">
@@ -25,7 +31,7 @@ class Search extends Component {
 			    <div className="search-books-results">
               		<ol className="books-grid">
               			{showingBooks.map((books, index) => (
-              				<p></p>
+              				<p key={index}>{books.title}</p>
               			))}
               		</ol>
             	</div>
