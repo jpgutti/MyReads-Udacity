@@ -13,27 +13,38 @@ class Search extends Component {
 			thatBooks: PropTypes.array.isRequired
 		}
 
-	// BooksAPI.search().then((books) => {this.setState({ thatBooks : books }) });
+	updateQuery = (query) => {
+		this.setState({ query: query.trim() })
+	}
 
 	render(){
-		console.log(this.props);
-		let showingBooks = this.props.thatBooks;
+		const { thatBooks } = this.props;
+		let showingBooks;
+		if(this.state.query){
+			showingBooks = this.props.getAll(this.state.query);
+		} else {
+			showingBooks = thatBooks;
+		}
 		
 		return(
 			<div className="search-books">
 			    <div className="search-books-bar">
 			      <Link className="close-search" to="/">Close</Link>
 			      <div className="search-books-input-wrapper">
-			        <input type="text" placeholder="Search by title or author"/>
+			        <input 	type="text" 
+			        		placeholder="Search by title or author"
+			        		onChange={event => this.updateQuery(event.target.value) }
+
+			        />
 
 			      </div>
 			    </div>
 			    <div className="search-books-results">
               		<ol className="books-grid">
-              			{showingBooks.map((books, index) => (
-              				<p key={index}>{books.title}</p>
-              			))}
-              		</ol>
+					      	{showingBooks.map((books, index) => (
+					      		<p key={index}>{books.title}</p>
+					      	))}
+					</ol>
             	</div>
 			</div>
 		)
