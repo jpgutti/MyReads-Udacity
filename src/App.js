@@ -8,7 +8,6 @@ import Search from './search'
 class BooksApp extends React.Component {
   state = {
     books: [],
-    thatBooks: []
   }
 
   componentDidMount(){
@@ -22,12 +21,17 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf).then(() => { this.setState({ books: this.state.books.filter((b) => b.id !== book.id).concat([book]) }) });
   }
 
+  addBook = (book, shelf) => {
+    book.shelf = shelf;
+    BooksAPI.update(book, shelf).then(() => { this.setState({ books: this.state.books.concat([book]) }) }); 
+  }
+
 
   render() {
     return (
       <div className="app">
         <Route path="/search" render={() => (
-            <Search thatBooks={this.state.thatBooks}
+            <Search addBook={this.addBook}
             />
           )}/>
         <Route exact path="/" render={() => (

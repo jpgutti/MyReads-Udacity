@@ -29,12 +29,12 @@ class Search extends Component {
     BooksAPI.search(this.state.query).then((books) => {
       this.setState({ books })
     });
-  }
+  	}
 
 
 	render(){
 		let showingBooks = this.state.books;
-		console.log(showingBooks[0]);	
+		console.log(showingBooks)
 		return(
 			<div className="search-books">
 			    <div className="search-books-bar">
@@ -54,10 +54,10 @@ class Search extends Component {
 					      		<li key={index}>
 				                    <div className="book">
 				                      <div className="book-top">
-				                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: '' }}></div>
+				                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${books.imageLinks.thumbnail})`}}></div>
 				                        <div className="book-shelf-changer">
-				                          <select>
-				                            <option value="none" disabled>Move to...</option>
+				                          <select value={!books.shelf ? 'none' : books.shelf} onChange={ event => this.props.addBook(books, event.target.value)}>
+				                            <option value="Move" disabled>Move to...</option>
 				                            <option value="currentlyReading">Currently Reading</option>
 				                            <option value="wantToRead">Want to Read</option>
 				                            <option value="read">Read</option>
@@ -66,7 +66,7 @@ class Search extends Component {
 				                        </div>
 				                      </div>
 				                      <div className="book-title">{books.title}</div>
-				                      <div className="book-authors">{books.author}</div>
+				                      <div className="book-authors">{books.authors}</div>
 				                    </div>
 				                </li>
 					      	))}
