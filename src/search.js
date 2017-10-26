@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-import BooksAPI from './BooksAPI';
+import * as BooksAPI from './BooksAPI';
 
 class Search extends Component {
 
@@ -12,7 +12,7 @@ class Search extends Component {
 	}
 
 	static PropTypes = {
-			thatBooks: PropTypes.array.isRequired
+			books: PropTypes.array.isRequired
 		}
 
 	updateQuery = (query) => {
@@ -26,13 +26,15 @@ class Search extends Component {
 
 	getAllBooks = () => {
 	console.log(this.state.query)
-    BooksAPI.search("this.state.query").then((books) => {
+    BooksAPI.search(this.state.query).then((books) => {
       this.setState({ books })
     });
   }
 
 
-	render(){		
+	render(){
+		let showingBooks = this.state.books;
+		console.log(showingBooks[0]);	
 		return(
 			<div className="search-books">
 			    <div className="search-books-bar">
@@ -48,8 +50,25 @@ class Search extends Component {
 			    </div>
 			    <div className="search-books-results">
               		<ol className="books-grid">
-					      	{this.state.books.map((books, index) => (
-					      		<p key={index}>{books.title}</p>
+					      	{showingBooks.map((books, index) => (
+					      		<li key={index}>
+				                    <div className="book">
+				                      <div className="book-top">
+				                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: '' }}></div>
+				                        <div className="book-shelf-changer">
+				                          <select>
+				                            <option value="none" disabled>Move to...</option>
+				                            <option value="currentlyReading">Currently Reading</option>
+				                            <option value="wantToRead">Want to Read</option>
+				                            <option value="read">Read</option>
+				                            <option value="none">None</option>
+				                          </select>
+				                        </div>
+				                      </div>
+				                      <div className="book-title">{books.title}</div>
+				                      <div className="book-authors">{books.author}</div>
+				                    </div>
+				                </li>
 					      	))}
 					</ol>
             	</div>
@@ -64,8 +83,7 @@ export default Search
 
        //      <div className="search-books-results">
 			    //   <ol className="books-grid">
-			    //   	{showingBooks.map((books, index) => (
-			    //   	<li key={books.id}>
+			    		// <li>
 	      //               <div className="book">
 	      //                 <div className="book-top">
 	      //                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: '' }}></div>
@@ -83,6 +101,5 @@ export default Search
 	      //                 <div className="book-authors">{books.author}</div>
 	      //               </div>
 	      //           </li>
-			    //   	))}
 			    //   </ol>
 			    // </div>
