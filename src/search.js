@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import BooksAPI from './BooksAPI';
 
 class Search extends Component {
 
 	state = {
-		query : ''
+		query : '',
+		books : []
 
 	}
 
@@ -14,18 +16,23 @@ class Search extends Component {
 		}
 
 	updateQuery = (query) => {
-		this.setState({ query: query.trim() })
-	}
-
-	render(){
-		const { thatBooks } = this.props;
-		let showingBooks;
-		if(this.state.query){
-			showingBooks = this.props.getAll(this.state.query);
-		} else {
-			showingBooks = thatBooks;
+		this.setState({ query },
+		() => {
+			if(query.length > 0) {
+				this.getAllBooks();
+			}
 		}
-		
+	)};
+
+	getAllBooks = () => {
+	console.log(this.state.query)
+    BooksAPI.search("this.state.query").then((books) => {
+      this.setState({ books })
+    });
+  }
+
+
+	render(){		
 		return(
 			<div className="search-books">
 			    <div className="search-books-bar">
@@ -41,7 +48,7 @@ class Search extends Component {
 			    </div>
 			    <div className="search-books-results">
               		<ol className="books-grid">
-					      	{showingBooks.map((books, index) => (
+					      	{this.state.books.map((books, index) => (
 					      		<p key={index}>{books.title}</p>
 					      	))}
 					</ol>

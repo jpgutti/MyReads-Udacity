@@ -17,13 +17,6 @@ class BooksApp extends React.Component {
     // BooksAPI.search("b").then((thatBooks) => {this.setState({ thatBooks }) })
   }
 
-  getAllBooks = (query) => {
-    BooksAPI.search(query).then((thatBooks) => {
-      this.setState({ thatBooks })
-      console.log(this.state.thatBooks);
-    });
-  }
-
   updateShelf = (book, shelf) => {
     book.shelf = shelf;
     BooksAPI.update(book, shelf).then(() => { this.setState({ books: this.state.books.filter((b) => b.id !== book.id).concat([book]) }) });
@@ -34,7 +27,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path="/search" render={() => (
-            <Search thatBooks={this.state.thatBooks} getAll={this.getAllBooks}
+            <Search thatBooks={this.state.thatBooks}
             />
           )}/>
         <Route exact path="/" render={() => (
