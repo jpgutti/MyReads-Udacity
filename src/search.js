@@ -26,10 +26,17 @@ class Search extends Component {
 	)};
 
 	getAllBooks = () => {
-	console.log(this.state.query)
-    BooksAPI.search(this.state.query).then(() => {
-      this.setState({ books : this.state.books.filter((b) => b.id !== this.props.book.id).concat([this.props.book]) })
-    });
+		console.log(this.state.query)
+	    BooksAPI.search(this.state.query, 20).then((result) => {
+		result = result.map(book => {
+			let userBook = this.props.books.find(b => b.id === book.id)
+			if(userBook){
+				book.shelf = userBook.shelf
+			}
+			return book
+		})
+			this.setState({ books : result})
+	    });
   	}
 
 
@@ -41,7 +48,7 @@ class Search extends Component {
 			    <div className="search-books-bar">
 			      <Link className="close-search" to="/">Close</Link>
 			      <div className="search-books-input-wrapper">
-			      	<Debounce time="300" handler="onChange">
+			      	<Debounce time="500" handler="onChange">
 			        <input 	type="text" 
 			        		placeholder="Search by title or author"
 			        		onChange={event => this.updateQuery(event.target.value) }
