@@ -26,8 +26,8 @@ class Search extends Component {
 
 	getAllBooks = () => {
 	console.log(this.state.query)
-    BooksAPI.search(this.state.query).then((books) => {
-      this.setState({ books })
+    BooksAPI.search(this.state.query).then(() => {
+      this.setState({ books : this.state.books.filter((b) => b.id !== this.props.book.id).concat([this.props.book]) })
     });
   	}
 
