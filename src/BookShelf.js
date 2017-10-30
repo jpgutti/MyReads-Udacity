@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 class BookShelf extends Component {
 
-  // this.setState({ reading : this.props.books.filter(books => books.shelf == 'currentlyReading')});
 	render(){
       let reading = this.props.books.filter(books => books.shelf === 'currentlyReading');
       let wanted = this.props.books.filter(books => books.shelf === 'wantToRead');

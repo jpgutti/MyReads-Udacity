@@ -24,25 +24,40 @@ class Search extends Component {
 			}
 		}
 	)};
+	// getAllBooks = () => {
+	//     BooksAPI.search(this.state.query, 20).then((result) => {
+	// 	result = result.map(book => {
+	// 		let userBook = this.props.books.find(b => b.id === book.id)
+	// 		if(userBook){
+	// 			book.shelf = userBook.shelf
+	// 		}
+	// 		return book
+	// 	})
+	// 		this.setState({ books : result})
+	//     });
+ //  	}
 
 	getAllBooks = () => {
-		console.log(this.state.query)
-	    BooksAPI.search(this.state.query, 20).then((result) => {
-		result = result.map(book => {
-			let userBook = this.props.books.find(b => b.id === book.id)
-			if(userBook){
-				book.shelf = userBook.shelf
-			}
-			return book
-		})
-			this.setState({ books : result})
-	    });
-  	}
+	        BooksAPI.search(this.state.query, 20).then((result) => {
+	            if(!result.error){
+	               result = result.map(book => {
+	                   let userBook = this.props.books.find(b => b.id === book.id)
+	                   if(userBook) {
+	                       book.shelf = userBook.shelf
+	                   }
+	                   return book
+	                })
+	            
+	               this.setState({books : result })
+	            } else {
+	             console.log("Termo não suportado")
+	            }
+	        });
+	      }
 
 
 	render(){
 		let showingBooks = this.state.books;
-		console.log(showingBooks)
 		return(
 			<div className="search-books">
 			    <div className="search-books-bar">
@@ -76,7 +91,7 @@ class Search extends Component {
 				                        </div>
 				                      </div>
 				                      <div className="book-title">{books.title}</div>
-				                      <div className="book-authors">{books.authors}</div>
+				                      <div className="book-authors">{books.authors && books.authors.join(', ')}</div>
 				                    </div>
 				                </li>
 					      	))}
@@ -89,27 +104,3 @@ class Search extends Component {
 }
 
 export default Search
-            
-
-       //      <div className="search-books-results">
-			    //   <ol className="books-grid">
-			    		// <li>
-	      //               <div className="book">
-	      //                 <div className="book-top">
-	      //                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: '' }}></div>
-	      //                   <div className="book-shelf-changer">
-	      //                     <select>
-	      //                       <option value="none" disabled>Move to...</option>
-	      //                       <option value="currentlyReading">Currently Reading</option>
-	      //                       <option value="wantToRead">Want to Read</option>
-	      //                       <option value="read">Read</option>
-	      //                       <option value="none">None</option>
-	      //                     </select>
-	      //                   </div>
-	      //                 </div>
-	      //                 <div className="book-title">{books.title}</div>
-	      //                 <div className="book-authors">{books.author}</div>
-	      //               </div>
-	      //           </li>
-			    //   </ol>
-			    // </div>
